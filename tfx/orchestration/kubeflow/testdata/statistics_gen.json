@@ -3,8 +3,7 @@
   "__module__": "tfx.orchestration.kubeflow.node_wrapper",
   "__tfx_object_type__": "jsonable",
   "_exec_properties": {
-    "stats_options_json": null,
-    "exclude_splits": "[]"
+    "stats_options_json": null
   },
   "_id": "StatisticsGen.foo",
   "_inputs": {

@@ -31,16 +31,12 @@ class SchemaGenTest(tf.test.TestCase):
   def testConstruct(self):
     statistics_artifact = standard_artifacts.ExampleStatistics()
     statistics_artifact.split_names = artifact_utils.encode_split_names(
-        ['train', 'eval'])
-    exclude_splits = ['eval']
+        ['train'])
     schema_gen = component.SchemaGen(
-        statistics=channel_utils.as_channel([statistics_artifact]),
-        exclude_splits=exclude_splits)
+        statistics=channel_utils.as_channel([statistics_artifact]))
     self.assertEqual(standard_artifacts.Schema.TYPE_NAME,
                      schema_gen.outputs['schema'].type_name)
     self.assertFalse(schema_gen.spec.exec_properties['infer_feature_shape'])
-    self.assertEqual(schema_gen.spec.exec_properties['exclude_splits'],
-                     '["eval"]')
 
   def testConstructWithParameter(self):
     statistics_artifact = standard_artifacts.ExampleStatistics()

@@ -25,18 +25,10 @@ class ComponentTest(tf.test.TestCase):
   def testConstruct(self):
     examples = standard_artifacts.Examples()
     examples.split_names = artifact_utils.encode_split_names(['train', 'eval'])
-    exclude_splits = ['eval']
     statistics_gen = component.StatisticsGen(
-        examples=channel_utils.as_channel([examples]),
-        exclude_splits=exclude_splits)
+        examples=channel_utils.as_channel([examples]))
     self.assertEqual(standard_artifacts.ExampleStatistics.TYPE_NAME,
                      statistics_gen.outputs['statistics'].type_name)
-    self.assertEqual(
-        '["train"]',
-        artifact_utils.get_single_instance(
-            list(statistics_gen.outputs['statistics'].get())).split_names)
-    self.assertEqual(statistics_gen.spec.exec_properties['exclude_splits'],
-                     '["eval"]')
 
   def testConstructWithSchemaAndStatsOptions(self):
     examples = standard_artifacts.Examples()
