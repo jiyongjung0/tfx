@@ -72,9 +72,7 @@ class _ParsedCsvToTfExample(beam.DoFn):
       elif column_info.type == csv_decoder.ColumnType.STRING:
         handler_fn = _bytes_handler
       else:
-        logging.warning('Failed to infer type of column %s, use `byte`.',
-                        column_info.name)
-        handler_fn = _bytes_handler
+        handler_fn = None
       column_handlers.append((column_info.name, handler_fn))
 
     self._column_handlers = column_handlers
@@ -95,7 +93,8 @@ class _ParsedCsvToTfExample(beam.DoFn):
     feature = {}
     for csv_cell, (column_name, handler_fn) in zip(csv_cells,
                                                    self._column_handlers):
-      feature[column_name] = handler_fn(csv_cell)
+      feature[column_name] = handler_fn(
+          csv_cell) if handler_fn else tf.train.Feature()
 
     yield tf.train.Example(features=tf.train.Features(feature=feature))
 
